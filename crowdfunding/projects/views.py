@@ -9,11 +9,14 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from django.http import Http404
 from .models import Project, Pledge
-from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer
-from .permissions import IsOwnerOrReadOnly
+from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, PledgeDetailSerializer
+from .permissions import IsOwnerOrReadOnly, IsSupporterOrReadOnly
 
 class ProjectList(APIView):
-   permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+   permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly,
+        IsOwnerOrReadOnly
+        ]
 
    def get(self, request):
        projects = Project.objects.all()
@@ -88,18 +91,33 @@ def post(self, request):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
-class CustomAuthToken(ObtainAuthToken):
-   def post(self, request, *args, **kwargs):
-       serializer = self.serializer_class(
-           data=request.data,
-           context={'request': request}
-       )
-       serializer.is_valid(raise_exception=True)
-       user = serializer.validated_data['user']
-       token, created = Token.objects.get_or_create(user=user)
-
-       return Response({
-           'token': token.key,
-           'user_id': user.id,
-           'email': user.email
-       })
+class PledgeDetail(APIView):
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly,
+        IsSupporterOrReadOnly
+    ]
+    def get_object(self, pk):
+        try:
+            pledge = Pledge.objects.get(pk=pk)
+            self.check_object_permissions(self.request, pledge)
+            return pledge
+        except Pledge.DoesNotExist:
+            raise Http404
+    def get(self, request, pk):
+        pledge = self.get_object(pk)
+        serializer = PledgeDetailSerializer(pledge)
+        return Response(serializer.data)
+    def put(self, request, pk):
+        pledge = self.get_object(pk)
+        serializer = PledgeDetailSerializer(
+            instance=pledge,
+            data=request.data,
+            partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
