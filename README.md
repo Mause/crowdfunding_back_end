@@ -4,17 +4,19 @@ A repo to contain my She Codes Crowdfunding back end project
 
 # Crowdfunding Back End
 
-{{ your name here }}
+Bianca Di Biase
 
 ## Planning:
 
 ### Concept/Name
 
-{{ Include a short description of your website concept here. }}
+Books for Change is a service that distributes real, physical books to metro and regional communities across Australia. We also offer educational programs to help improve literacy as well as reading and comprehension skills for all ages. Books can give ideas, open minds, expand perspectives, offer growth and learning, and show people what’s possible. We believe that the gift of reading is something that can and should be available to everyone.
+
+_ Books for love _ Books for growth _ Books for hope _ Books for justice _ Books for power _ Books for learning _ Books for possibility _ Books for healing _ Books for connection _ Books for understanding _ Books for diversity _ Books for inclusivity
 
 ### Intended Audience/User Stories
 
-{{ Who are your intended audience? How will they use the website? }}
+The target audience for Books for Change are individuals, groups and companies who are interested in helping empower and uplift others through book distribution and education, particularly those in marginalised communities.
 
 ### Front End Pages/Functionality
 
@@ -42,10 +44,21 @@ It can be helpful to keep the markdown preview open in VS Code so that you can s
 
 ![]( {{ ./relative/path/to/your/schema/image.png }} )
 
+### A link to the deployed project.
+
+### A screenshot of Insomnia, demonstrating a successful GET method for any endpoint.
+
+### A screenshot of Insomnia, demonstrating a successful POST method for any endpoint.
+
+## A screenshot of Insomnia, demonstrating a token being returned.
+
+## Step by step instructions for how to register a new user and create a new project (i.e. endpoints and body data).
+
 ## Project Requirements
+
 Your crowdfunding project must:
 
-- [ ] Be separated into two distinct projects: an API built using the Django Rest Framework and a website built using React. 
+- [ ] Be separated into two distinct projects: an API built using the Django Rest Framework and a website built using React.
 - [ ] Have a cool name, bonus points if it includes a pun and/or missing vowels. See https://namelix.com/ for inspiration. <sup><sup>(Bonus Points are meaningless)</sup></sup>
 - [ ] Have a clear target audience.
 - [ ] Have user accounts. A user should have at least the following attributes:
@@ -74,14 +87,17 @@ Your crowdfunding project must:
 - [ ] Implement responsive design.
 
 ## Additional Notes
+
 No additional libraries or frameworks, other than what we use in class, are allowed unless approved by the Lead Mentor.
 
 Note that while this is a crowdfunding website, actual money transactions are out of scope for this project.
 
 ## Submission
+
 To submit, fill out [this Google form](https://forms.gle/34ymxgPhdT8YXDgF6), including a link to your Github repo. Your lead mentor will respond with any feedback they can offer, and you can approach the mentoring team if you would like help to make improvements based on this feedback!
 
 Please include the following in your readme doc:
+
 - [ ] A link to the deployed project.
 - [ ] A screenshot of Insomnia, demonstrating a successful GET method for any endpoint.
 - [ ] A screenshot of Insomnia, demonstrating a successful POST method for any endpoint.
