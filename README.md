@@ -66,7 +66,7 @@ Step Three: Next, click on Auth, choose Bearer Token from the dropdown list, cop
 (../images/screenshotstepthree.png)
 
 Step Four: Make sure /projects/ is at the end of the Post http address. In the body field (JSON), fill in the following fields: title, description, goal, image, is_open and owner.
-(../images/screenshotstepfour.png)
+../images/screenshotstepfour.png
 
 ## Submission
 
