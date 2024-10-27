@@ -44,7 +44,7 @@ It can be helpful to keep the markdown preview open in VS Code so that you can s
 
 ### A screenshot of Insomnia, demonstrating a successful GET method for any endpoint.
 
-(./images/screenshotget.png)
+<img src="screenshotget.png">
 
 ### A screenshot of Insomnia, demonstrating a successful POST method for any endpoint.
 
