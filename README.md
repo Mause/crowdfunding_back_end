@@ -48,7 +48,7 @@ It can be helpful to keep the markdown preview open in VS Code so that you can s
 
 ### A screenshot of Insomnia, demonstrating a successful POST method for any endpoint.
 
-![](./images/screenshotget.png)
+![](.crowdfunding/images/screenshotget.png)
 
 ## A screenshot of Insomnia, demonstrating a token being returned.
 
