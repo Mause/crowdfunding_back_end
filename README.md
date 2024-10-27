@@ -48,11 +48,29 @@ It can be helpful to keep the markdown preview open in VS Code so that you can s
 
 ### A screenshot of Insomnia, demonstrating a successful GET method for any endpoint.
 
+(./images/screenshotget.png)
+
 ### A screenshot of Insomnia, demonstrating a successful POST method for any endpoint.
+
+(./images/screenshotpost.png)
 
 ## A screenshot of Insomnia, demonstrating a token being returned.
 
+(./images/screenshottoken.png)
+
 ## Step by step instructions for how to register a new user and create a new project (i.e. endpoints and body data).
+
+Step One: To create a new user in Insomnia, start by creating a new HTTP Request, changing Get to Post, click on Body, change text to JSON and enter username, password and email. The http address next to post should end in /users/.
+(./images/screenshotstepone.png)
+
+Step Two: Next, replace /users/ with /api-token-auth/ in the post http address. Log in user details to generate a token.
+(./images/screenshotsteptwo.png)
+
+Step Three: Next, click on Auth, choose Bearer Token from the dropdown list, copy the token generated in the previous step, and paste in the Token field. Write the word token in the Prefix field.
+(./images/screenshotstepthree.png)
+
+Step Four: Make sure /projects/ is at the end of the Post http address. In the body field (JSON), fill in the following fields: title, description, goal, image, is_open and owner.
+(./images/screenshotstepfour.png)
 
 ## Project Requirements
 
