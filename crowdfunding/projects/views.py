@@ -23,8 +23,6 @@ class ProjectList(APIView):
        serializer = ProjectSerializer(projects, many=True)
        return Response(serializer.data)
 
-
-   
    def post(self, request):
        serializer = ProjectSerializer(data=request.data)
        if serializer.is_valid():
@@ -69,17 +67,17 @@ def put(self, request, pk):
        )
    
 class PledgeList(APIView):
-       permission_classes = [
-      permissions.IsAuthenticatedOrReadOnly,
-      IsOwnerOrReadOnly
+    permission_classes = [
+    permissions.IsAuthenticatedOrReadOnly,
+    IsOwnerOrReadOnly
    ]
 
-def get(self, request):
+    def get(self, request):
         pledges = Pledge.objects.all()
         serializer = PledgeSerializer(pledges, many=True)
         return Response(serializer.data)
 
-def post(self, request):
+    def post(self, request):
         serializer = PledgeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(supporter=request.user)
