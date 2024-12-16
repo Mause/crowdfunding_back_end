@@ -1,14 +1,16 @@
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
+from rest_framework import status  # Import the status module
 from django.http import Http404
 from .models import Project, Pledge
 from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, PledgeDetailSerializer
 from .permissions import IsOwnerOrReadOnly, IsSupporterOrReadOnly
 
+# Project views
 class ProjectList(APIView):
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly,
+        IsAuthenticatedOrReadOnly,
         IsOwnerOrReadOnly
     ]
 
@@ -23,11 +25,11 @@ class ProjectList(APIView):
             serializer.save(owner=request.user)
             return Response(
                 serializer.data,
-                status=status.HTTP_201_CREATED
+                status=status.HTTP_201_CREATED  # Use status from rest_framework
             )
         return Response(
             serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST  # Use status from rest_framework
         )
 
 class ProjectDetail(APIView):
@@ -57,12 +59,13 @@ class ProjectDetail(APIView):
 
         return Response(
             serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST  # Use status from rest_framework
         )
 
+# Pledge views
 class PledgeList(APIView):
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly,
+        IsAuthenticatedOrReadOnly,
         IsOwnerOrReadOnly
     ]
 
@@ -85,16 +88,16 @@ class PledgeList(APIView):
             serializer.save(supporter=request.user)
             return Response(
                 serializer.data,
-                status=status.HTTP_201_CREATED
+                status=status.HTTP_201_CREATED  # Use status from rest_framework
             )
         return Response(
             serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST  # Use status from rest_framework
         )
 
 class PledgeDetail(APIView):
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly,
+        IsAuthenticatedOrReadOnly,
         IsSupporterOrReadOnly
     ]
 
@@ -123,5 +126,20 @@ class PledgeDetail(APIView):
             return Response(serializer.data)
         return Response(
             serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST  # Use status from rest_framework
         )
+
+# New PledgeCreate view for handling pledge creation with authentication
+class PledgeCreate(APIView):
+    permission_classes = [IsAuthenticated]  # Ensure that only authenticated users can make a pledge
+
+    def post(self, request):
+        # Initialize the PledgeSerializer with the data from the request
+        serializer = PledgeSerializer(data=request.data)
+
+        # Check if the serializer is valid
+        if serializer.is_valid():
+            # Associate the pledge with the current authenticated user (supporter)
+            serializer.save(supporter=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)  # Return the pledge data with status 201
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  # Return validation errors with status 400

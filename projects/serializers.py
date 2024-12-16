@@ -9,8 +9,8 @@ class PledgeSerializer(serializers.ModelSerializer):
     )  # Allow blank or null comments
 
     class Meta:
-        model = Pledge  # Ensure the Pledge model is used
-        fields = '__all__'  # Serialize all fields in the model
+        model = Pledge
+        fields = '__all__'
 
 
 class ProjectSerializer(serializers.ModelSerializer):
