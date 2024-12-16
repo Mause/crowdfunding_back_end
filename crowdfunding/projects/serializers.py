@@ -1,50 +1,46 @@
 from rest_framework import serializers
-from .models import Project, Pledge  # Import both Project and Pledge models
+from .models import Project, Pledge
 
+# Pledge Serializer
 class PledgeSerializer(serializers.ModelSerializer):
-    supporter = serializers.ReadOnlyField(source='supporter.id')  # Read-only field for the supporter ID
-    project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())  # Validates project by ID
-    comment = serializers.CharField(
-        allow_blank=True, allow_null=True, required=False
-    )  # Allow blank or null comments
+    # Include the supporter's username if needed in the serialized output
+    supporter = serializers.ReadOnlyField(source='supporter.username')
 
     class Meta:
         model = Pledge
-        fields = '__all__'
+        fields = ['id', 'amount', 'comment', 'anonymous', 'supporter', 'project']
+        read_only_fields = ['id', 'supporter']  # Fields that should not be writable by the user
 
+# Pledge Detail Serializer (optional, for more specific details if needed)
+class PledgeDetailSerializer(serializers.ModelSerializer):
+    supporter = serializers.ReadOnlyField(source='supporter.username')
+    project_name = serializers.ReadOnlyField(source='project.title')
 
+    class Meta:
+        model = Pledge
+        fields = ['id', 'amount', 'comment', 'anonymous', 'supporter', 'project', 'project_name']
+        read_only_fields = ['id', 'supporter', 'project', 'project_name']
+
+# Project Serializer for listing all projects
 class ProjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project  # Ensure the Project model is used
-        fields = '__all__'  # Serialize all fields in the model
-
-
-class ProjectDetailSerializer(ProjectSerializer):
-    pledges = PledgeSerializer(many=True, read_only=True)  # Nested PledgeSerializer to show pledges
+    # Include the owner's username if needed in the serialized output
+    owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
-        model = Project  # Ensure the Project model is used
-        fields = '__all__'  # Serialize all fields in the model
+        model = Project
+        fields = ['id', 'title', 'description', 'goal', 'image', 'is_open', 'date_created', 'owner']
+        read_only_fields = ['id', 'date_created', 'owner']  # Fields that should not be writable by the user
 
-    def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data.get('description', instance.description)
-        instance.goal = validated_data.get('goal', instance.goal)
-        instance.image = validated_data.get('image', instance.image)
-        instance.is_open = validated_data.get('is_open', instance.is_open)
-        instance.date_created = validated_data.get('date_created', instance.date_created)
-        instance.owner = validated_data.get('owner', instance.owner)
-        instance.save()
-        return instance
+# Project Detail Serializer for individual project view
+class ProjectDetailSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+    # Nested pledges: Fetch all related pledges for a project
+    pledges = PledgeSerializer(many=True, read_only=True)
 
-
-class PledgeDetailSerializer(PledgeSerializer):
-    # Custom update method for the PledgeDetailSerializer
-    def update(self, instance, validated_data):
-        instance.amount = validated_data.get('amount', instance.amount)
-        instance.comment = validated_data.get('comment', instance.comment)
-        instance.anonymous = validated_data.get('anonymous', instance.anonymous)
-        instance.project = validated_data.get('project', instance.project)
-        instance.save()
-        return instance
-
+    class Meta:
+        model = Project
+        fields = [
+            'id', 'title', 'description', 'goal', 'image', 'is_open', 
+            'date_created', 'owner', 'pledges'
+        ]
+        read_only_fields = ['id', 'date_created', 'owner', 'pledges']  # Fields that should not be writable by the user
