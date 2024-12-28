@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from .models import CustomUser
-from .serializers import CustomUserSerializer
+from .models import CustomUser, Pledge  # Import Pledge model
+from .serializers import CustomUserSerializer, PledgeSerializer  # Import PledgeSerializer
 
+# CustomUser List (GET and POST requests)
 class CustomUserList(APIView):
    def get(self, request):
        users = CustomUser.objects.all()
@@ -26,6 +27,7 @@ class CustomUserList(APIView):
            status=status.HTTP_400_BAD_REQUEST
        )
 
+# CustomUser Detail (GET request)
 class CustomUserDetail(APIView):
    def get_object(self, pk):
        try:
@@ -37,7 +39,8 @@ class CustomUserDetail(APIView):
        user = self.get_object(pk)
        serializer = CustomUserSerializer(user)
        return Response(serializer.data)
-   
+
+# Custom Auth Token (POST request)
 class CustomAuthToken(ObtainAuthToken):
    def post(self, request, *args, **kwargs):
        serializer = self.serializer_class(
@@ -53,3 +56,19 @@ class CustomAuthToken(ObtainAuthToken):
            'user_id': user.id,
            'email': user.email
        })
+
+# Create Pledge (POST request)
+class CreatePledge(APIView):
+    def post(self, request):
+        # Serialize the incoming data
+        serializer = PledgeSerializer(data=request.data)
+
+        if serializer.is_valid():
+            # Save the pledge to the database
+            serializer.save()
+
+            # Return a success response with a status of 201 (Created)
+            return Response({"success": True, "message": "Pledge created!"}, status=status.HTTP_201_CREATED)
+        
+        # Return the errors if data is invalid
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
