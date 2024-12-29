@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import CustomUser, Pledge  # Import Pledge model
+from .models import CustomUser
+from projects.models import Pledge  # Import Pledge model
 
 # CustomUser Serializer
 class CustomUserSerializer(serializers.ModelSerializer):
