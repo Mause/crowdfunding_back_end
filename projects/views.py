@@ -68,7 +68,7 @@ class ProjectDetail(APIView):
 
 # Pledge Views
 class PledgeList(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def get(self, request):
         pledges = Pledge.objects.all()
@@ -78,14 +78,14 @@ class PledgeList(APIView):
     def post(self, request):
         serializer = PledgeSerializer(data=request.data)
         if serializer.is_valid():
-            project_id = request.data.get("project")
-            try:
-                project = Project.objects.get(id=project_id)
-            except Project.DoesNotExist:
-                return Response(
-                    {"detail": "Project does not exist."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+            # project_id = request.data.get("project")
+            # try:
+            #     project = Project.objects.get(id=project_id)
+            # except Project.DoesNotExist:
+            #     return Response(
+            #         {"detail": "Project does not exist."},
+            #         status=status.HTTP_400_BAD_REQUEST
+            #     )
 
             serializer.save(supporter=request.user)
             return Response(

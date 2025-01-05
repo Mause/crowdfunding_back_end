@@ -1,15 +1,14 @@
 from rest_framework import serializers
 from .models import Project, Pledge
+from django.apps import apps
 
 # Pledge Serializer
 class PledgeSerializer(serializers.ModelSerializer):
-    # Include the supporter's username if needed in the serialized output
-    supporter = serializers.ReadOnlyField(source='supporter.username')
-
+    supporter = serializers.ReadOnlyField(source='supporter.id')
     class Meta:
-        model = Pledge
-        fields = ['id', 'amount', 'comment', 'anonymous', 'supporter', 'project']
-        read_only_fields = ['id', 'supporter']  # Fields that should not be writable by the user
+        model = apps.get_model('projects.Pledge')
+        fields ='__all__'
+        # read_only_fields = ['id', 'supporter']  # Fields that should not be writable by the user
 
 # Pledge Detail Serializer (optional, for more specific details if needed)
 class PledgeDetailSerializer(serializers.ModelSerializer):
