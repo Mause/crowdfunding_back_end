@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from .models import CustomUser, Pledge  # Import Pledge model
-from .serializers import CustomUserSerializer, PledgeSerializer  # Import PledgeSerializer
+from .models import CustomUser, Pledge, Project  # Import Project model
+from .serializers import CustomUserSerializer, PledgeSerializer, ProjectSerializer  # Import ProjectSerializer
 
 # CustomUser List (GET and POST requests)
 class CustomUserList(APIView):
@@ -72,3 +72,26 @@ class CreatePledge(APIView):
         
         # Return the errors if data is invalid
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# List Projects (GET request)
+class ProjectList(APIView):
+    def get(self, request):
+        projects = Project.objects.all()  # Get all projects from the database
+        serializer = ProjectSerializer(projects, many=True)  # Serialize the list of projects
+        return Response(serializer.data)  # Return the serialized data
+
+    def post(self, request):
+        serializer = ProjectSerializer(data=request.data)  # Serialize incoming project data
+        if serializer.is_valid():
+            serializer.save()  # Save the new project to the database
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            serializer.errors, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+

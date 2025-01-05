@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, Pledge  # Import Pledge model
+from .models import CustomUser, Pledge, Project  # Import Project model
 
 # CustomUser Serializer
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -19,3 +19,9 @@ class PledgeSerializer(serializers.ModelSerializer):
 
     # Add any custom validation logic or methods if necessary
 
+
+# Project Serializer (New)
+class ProjectSerializer(serializers.ModelSerializer):  # New serializer for Project model
+    class Meta:
+        model = Project
+        fields = ['id', 'title', 'description', 'goal', 'created_at', 'updated_at']  # List the fields you want to serialize
